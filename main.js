@@ -1,12 +1,30 @@
 import { using } from "./Utils/ModClasses.js";
 
+/**
+ * @file DebuffDrawer.js
+ * @module Harges.UI.Player.DebuffDisplay
+ * @author Harges Team
+ * @repository https://github.com/Harges-Mod/Harges
+ * @description A mod of HargesMod.
+ */
+
 const BuffStates = new Map();
 using("Terraria");
 using("Terraria.GameContent");
 using("Microsoft.Xna.Framework");
 using("Microsoft.Xna.Framework.Graphics");
 
+/**
+ * @class RectHelper
+ */
 class RectHelper {
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} width
+     * @param {number} height
+     * @returns {Rectangle}
+     */
     static New = (x, y, width, height) => {
         const r = Rectangle.new();
         r.X = x | 0;
@@ -17,12 +35,31 @@ class RectHelper {
     };
 }
 
+/**
+ * @class Vec2Helper
+ */
 class Vec2Helper {
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
     static New = Vector2.new()["void .ctor(float x, float y)"];
+
+    /**
+     * @param {Vector2} value1
+     * @param {Vector2} value2
+     * @returns {Vector2}
+     */
     static Subtract = Vector2["Vector2 op_Subtraction(Vector2 value1, Vector2 value2)"];
 }
 
+/**
+ * @class DebuffDrawer
+ * @description full Render System for player de/buffs.
+ */
 class DebuffDrawer {
+    /** @constructor */
     constructor() {
         this.buffWidth = 32;
         this.buffHeight = 32;
@@ -32,8 +69,13 @@ class DebuffDrawer {
         this.OnlyDebuffType = true;
     }
 
+    /** @type {DebuffDrawer} */
     static instance = new DebuffDrawer();
 
+    /**
+     * @param {number} playerID
+     * @returns {Array<Object>}
+     */
     getPlayerBuffState(playerID) {
         if (!this.buffStates.has(playerID)) {
             this.buffStates.set(playerID, []);
@@ -41,6 +83,7 @@ class DebuffDrawer {
         return this.buffStates.get(playerID);
     }
 
+    /** @returns {void} */
     drawBuffs() {
         const player = Main.player[0];
         const screenOffset = Vec2Helper.Subtract(player.Center, Main.screenPosition);
